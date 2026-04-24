@@ -101,6 +101,7 @@ private:
     void updateCardLevel();
     void updateTitle();
     void addFieldWidget(const QString& label, const QString& defaultValue);
+    static QColor levelToColor(StatusLevel level);
     static QString levelToString(StatusLevel level);
 
     struct FieldWidget {

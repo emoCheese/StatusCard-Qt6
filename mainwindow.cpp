@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
         .index(1)
         .addField(QStringLiteral("驾舱CAN"), QStringLiteral("初始化中..."))
         .addField(QStringLiteral("网络传输"), QStringLiteral("初始化中..."))
+        .addField(QStringLiteral("WiFi7"), QStringLiteral("断开"))
         .mapRange(QStringLiteral("驾舱CAN"), 0, 50, StatusCard::Normal)
         .mapRange(QStringLiteral("驾舱CAN"), 51, 100, StatusCard::Warning)
         .mapValue(QStringLiteral("网络传输"), QStringLiteral("OK"), StatusCard::Normal)
@@ -145,7 +146,7 @@ MainWindow::MainWindow(QWidget *parent)
             card5->updateField(QStringLiteral("制动压力"), QStringLiteral("%1 bar").arg(pressure));
         }
 
-        if (auto* card6 = m_grid->cardAt(1, 2)) {
+        if (auto* card6 = m_grid->cardAt(1, 2); card6) {
             QString eStop = (QRandomGenerator::global()->bounded(10) == 0)
                                 ? QStringLiteral("按下")
                                 : QStringLiteral("释放");

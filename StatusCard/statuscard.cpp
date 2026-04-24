@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QThread>
 #include <QMetaObject>
+#include <QPalette>
 
 StatusCard::StatusCard(QWidget* parent)
     : QWidget(parent)
@@ -71,7 +72,10 @@ void StatusCard::updateFieldInternal(const QString& fieldName, const QVariant& v
 
     StatusLevel level = m_mapper->evaluate(fieldName, value);
     fw.currentLevel = level;
-    fw.value->setProperty("level", levelToString(level));
+
+    QPalette pal = fw.value->palette();
+    pal.setColor(QPalette::WindowText, levelToColor(level));
+    fw.value->setPalette(pal);
 
     updateCardLevel();
 }
@@ -122,6 +126,20 @@ void StatusCard::addFieldWidget(const QString& label, const QString& defaultValu
     fw.value = valueWidget;
     fw.currentLevel = StatusLevel::Unknown;
     m_fields.insert(label, fw);
+}
+
+QColor StatusCard::levelToColor(StatusLevel level)
+{
+    switch (level) {
+    case StatusLevel::Normal:
+        return QColor(QStringLiteral("#FFFFFF"));
+    case StatusLevel::Warning:
+        return QColor(QStringLiteral("#FFD700"));
+    case StatusLevel::Error:
+        return QColor(QStringLiteral("#FF4444"));
+    default:
+        return QColor(QStringLiteral("#888888"));
+    }
 }
 
 QString StatusCard::levelToString(StatusLevel level)

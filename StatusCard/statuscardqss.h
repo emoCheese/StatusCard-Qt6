@@ -45,22 +45,6 @@ StatusCard .status-value {
     font-weight: bold;
 }
 
-StatusCard[level="normal"] .status-value {
-    color: #FFFFFF;
-}
-
-StatusCard[level="warning"] .status-value {
-    color: #FFD700;
-}
-
-StatusCard[level="error"] .status-value {
-    color: #FF4444;
-}
-
-StatusCard[level="unknown"] .status-value {
-    color: #888888;
-}
-
 StatusCardGrid {
     background-color: #1E1E1E;
 }
