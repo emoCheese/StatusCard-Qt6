@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_grid = new StatusCardGrid(this);
     m_grid->setGridSize(2, 3);
+
     setCentralWidget(m_grid);
 
     // Card 1: 主控状态
@@ -97,6 +98,8 @@ MainWindow::MainWindow(QWidget *parent)
         .mapValue(QStringLiteral("安全带"), QStringLiteral("已系"), StatusCard::Normal)
         .mapValue(QStringLiteral("安全带"), QStringLiteral("未系"), StatusCard::Warning)
     );
+
+    m_grid->setCardValuePointSize(16);
 
     // 模拟工作线程秒级刷新数据
     QTimer* timer = new QTimer(this);

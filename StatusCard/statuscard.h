@@ -94,6 +94,15 @@ public:
     QString title() const { return m_title; }
     int index() const { return m_index; }
 
+    void setTitleFont(const QFont& font);
+    void setTitlePointSize(int pointSize);
+
+    void setLabelFont(const QFont& font);
+    void setLabelPointSize(int pointSize);
+
+    void setValueFont(const QFont& font);
+    void setValuePointSize(int pointSize);
+
 private:
     friend class Builder;
 
@@ -101,6 +110,9 @@ private:
     void updateCardLevel();
     void updateTitle();
     void addFieldWidget(const QString& label, const QString& defaultValue);
+    void applyTitleFont();
+    void applyLabelFont();
+    void applyValueFont();
     static QColor levelToColor(StatusLevel level);
     static QString levelToString(StatusLevel level);
 
@@ -116,4 +128,7 @@ private:
     QHash<QString, FieldWidget> m_fields;
     QLabel* m_titleLabel = nullptr;
     QVBoxLayout* m_mainLayout = nullptr;
+    QFont m_titleFont;
+    QFont m_labelFont;
+    QFont m_valueFont;
 };

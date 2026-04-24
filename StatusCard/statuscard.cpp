@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QMetaObject>
 #include <QPalette>
+#include <QFont>
 
 StatusCard::StatusCard(QWidget* parent)
     : QWidget(parent)
@@ -24,6 +25,17 @@ StatusCard::StatusCard(QWidget* parent)
     m_mainLayout->addWidget(m_titleLabel);
 
     m_mainLayout->addStretch();
+
+    // 初始化默认字体
+    m_titleFont.setPointSize(14);
+    m_titleFont.setBold(true);
+
+    m_labelFont.setPointSize(12);
+
+    m_valueFont.setPointSize(12);
+    m_valueFont.setBold(true);
+
+    applyTitleFont();
 }
 
 StatusCard::~StatusCard() = default;
@@ -109,11 +121,13 @@ void StatusCard::addFieldWidget(const QString& label, const QString& defaultValu
     QLabel* labelWidget = new QLabel(label + QStringLiteral(":"), this);
     labelWidget->setObjectName(QStringLiteral("fieldLabel_%1").arg(label));
     labelWidget->setProperty("class", QStringLiteral("field-label"));
+    labelWidget->setFont(m_labelFont);
 
     QLabel* valueWidget = new QLabel(defaultValue, this);
     valueWidget->setObjectName(QStringLiteral("fieldValue_%1").arg(label));
     valueWidget->setProperty("class", QStringLiteral("status-value"));
     valueWidget->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    valueWidget->setFont(m_valueFont);
 
     row->addWidget(labelWidget);
     row->addStretch();
@@ -126,6 +140,64 @@ void StatusCard::addFieldWidget(const QString& label, const QString& defaultValu
     fw.value = valueWidget;
     fw.currentLevel = StatusLevel::Unknown;
     m_fields.insert(label, fw);
+}
+
+void StatusCard::setTitleFont(const QFont& font)
+{
+    m_titleFont = font;
+    applyTitleFont();
+}
+
+void StatusCard::setTitlePointSize(int pointSize)
+{
+    m_titleFont.setPointSize(pointSize);
+    applyTitleFont();
+}
+
+void StatusCard::setLabelFont(const QFont& font)
+{
+    m_labelFont = font;
+    applyLabelFont();
+}
+
+void StatusCard::setLabelPointSize(int pointSize)
+{
+    m_labelFont.setPointSize(pointSize);
+    applyLabelFont();
+}
+
+void StatusCard::setValueFont(const QFont& font)
+{
+    m_valueFont = font;
+    applyValueFont();
+}
+
+void StatusCard::setValuePointSize(int pointSize)
+{
+    m_valueFont.setPointSize(pointSize);
+    applyValueFont();
+}
+
+void StatusCard::applyTitleFont()
+{
+    if (m_titleLabel)
+        m_titleLabel->setFont(m_titleFont);
+}
+
+void StatusCard::applyLabelFont()
+{
+    for (const auto& fw : std::as_const(m_fields)) {
+        if (fw.label)
+            fw.label->setFont(m_labelFont);
+    }
+}
+
+void StatusCard::applyValueFont()
+{
+    for (const auto& fw : std::as_const(m_fields)) {
+        if (fw.value)
+            fw.value->setFont(m_valueFont);
+    }
 }
 
 QColor StatusCard::levelToColor(StatusLevel level)

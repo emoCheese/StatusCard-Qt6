@@ -4,6 +4,8 @@
 #include "statuscard.h"
 #include <QWidget>
 #include <QHash>
+#include <QFont>
+#include <optional>
 
 class QGridLayout;
 
@@ -23,10 +25,22 @@ public:
 
     void setCardClass(const QString& className);
 
+    void setCardTitleFont(const QFont& font);
+    void setCardTitlePointSize(int pointSize);
+
+    void setCardLabelFont(const QFont& font);
+    void setCardLabelPointSize(int pointSize);
+
+    void setCardValueFont(const QFont& font);
+    void setCardValuePointSize(int pointSize);
+
 private:
     QGridLayout* m_layout = nullptr;
     int m_rows = 0;
     int m_cols = 0;
     QString m_cardClass;
     QHash<QPair<int, int>, StatusCard*> m_cards;
+    std::optional<QFont> m_globalTitleFont;
+    std::optional<QFont> m_globalLabelFont;
+    std::optional<QFont> m_globalValueFont;
 };

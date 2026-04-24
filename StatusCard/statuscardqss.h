@@ -30,19 +30,14 @@ StatusCard[level="unknown"] {
 
 StatusCard .card-title {
     color: #FFFFFF;
-    font-size: 14px;
-    font-weight: bold;
     padding-bottom: 8px;
 }
 
 StatusCard .field-label {
     color: #AAAAAA;
-    font-size: 12px;
 }
 
 StatusCard .status-value {
-    font-size: 12px;
-    font-weight: bold;
 }
 
 StatusCardGrid {
