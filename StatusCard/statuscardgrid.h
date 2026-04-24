@@ -34,6 +34,8 @@ public:
     void setCardValueFont(const QFont& font);
     void setCardValuePointSize(int pointSize);
 
+    void setCardBackgroundColor(const QColor& color);
+
 private:
     QGridLayout* m_layout = nullptr;
     int m_rows = 0;
@@ -43,4 +45,5 @@ private:
     std::optional<QFont> m_globalTitleFont;
     std::optional<QFont> m_globalLabelFont;
     std::optional<QFont> m_globalValueFont;
+    std::optional<QColor> m_globalBackgroundColor;
 };

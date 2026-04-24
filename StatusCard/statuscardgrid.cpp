@@ -47,6 +47,8 @@ StatusCard* StatusCardGrid::addCard(int row, int col, StatusCard* card)
         card->setLabelFont(m_globalLabelFont.value());
     if (m_globalValueFont)
         card->setValueFont(m_globalValueFont.value());
+    if (m_globalBackgroundColor)
+        card->setBackgroundColor(m_globalBackgroundColor.value());
 
     m_layout->addWidget(card, row, col);
     m_cards[qMakePair(row, col)] = card;
@@ -115,4 +117,13 @@ void StatusCardGrid::setCardValuePointSize(int pointSize)
     QFont font = m_globalValueFont.value_or(QFont());
     font.setPointSize(pointSize);
     setCardValueFont(font);
+}
+
+void StatusCardGrid::setCardBackgroundColor(const QColor& color)
+{
+    m_globalBackgroundColor = color;
+    for (auto* card : std::as_const(m_cards)) {
+        if (card)
+            card->setBackgroundColor(color);
+    }
 }

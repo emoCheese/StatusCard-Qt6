@@ -26,6 +26,22 @@ StatusLevel StatusMapper::evaluate(const QString& field, const QVariant& value) 
     if (rit != m_rangeRules.end()) {
         bool ok = false;
         int intValue = value.toInt(&ok);
+        if (!ok && value.typeId() == QMetaType::QString) {
+            const QString str = value.toString();
+            QString numStr;
+            bool foundDigit = false;
+            for (const QChar& c : str) {
+                if (c.isDigit() || (c == QLatin1Char('-') && numStr.isEmpty())) {
+                    numStr.append(c);
+                    foundDigit = true;
+                } else if (foundDigit) {
+                    break;
+                }
+            }
+            if (!numStr.isEmpty()) {
+                intValue = numStr.toInt(&ok);
+            }
+        }
         if (ok) {
             for (const auto& rule : rit.value()) {
                 if (intValue >= rule.min && intValue <= rule.max) {

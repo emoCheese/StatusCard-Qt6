@@ -103,6 +103,8 @@ public:
     void setValueFont(const QFont& font);
     void setValuePointSize(int pointSize);
 
+    void setBackgroundColor(const QColor& color);
+
 private:
     friend class Builder;
 
@@ -131,4 +133,5 @@ private:
     QFont m_titleFont;
     QFont m_labelFont;
     QFont m_valueFont;
+    QColor m_backgroundColor;
 };
