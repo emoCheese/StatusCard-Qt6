@@ -1,6 +1,6 @@
 # StatusCardKit
 
-基于 **Qt6 QWidget + QSS** 的状态卡片监控组件库，专为远程驾驶舱等秒级刷新监控场景设计。
+基于 **Qt6 QWidget + QSS** 的状态卡片监控组件库
 
 ---
 
