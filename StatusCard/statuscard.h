@@ -54,6 +54,12 @@ public:
             return *this;
         }
 
+        Builder& setUnit(const QString& field, const QString& unit)
+        {
+            m_units.insert(field, unit);
+            return *this;
+        }
+
         StatusCard* build(QWidget* parent = nullptr) &&
         {
             StatusCard* card = new StatusCard(parent);
@@ -68,6 +74,7 @@ public:
             for (const auto& v : std::as_const(m_valueRules)) {
                 card->m_mapper->addValueRule(std::get<0>(v), std::get<1>(v), std::get<2>(v));
             }
+            card->m_fieldUnits = m_units;
             card->updateTitle();
             return card;
         }
@@ -79,6 +86,7 @@ public:
         QVector<QPair<QString, QString>> m_fields;
         QVector<std::tuple<QString, int, int, StatusLevel>> m_rangeRules;
         QVector<std::tuple<QString, QVariant, StatusLevel>> m_valueRules;
+        QHash<QString, QString> m_units;
     };
 
     explicit StatusCard(QWidget* parent = nullptr);
@@ -128,6 +136,7 @@ private:
     QString m_title;
     int m_index = 0;
     QHash<QString, FieldWidget> m_fields;
+    QHash<QString, QString> m_fieldUnits;
     QLabel* m_titleLabel = nullptr;
     QVBoxLayout* m_mainLayout = nullptr;
     QFont m_titleFont;

@@ -30,20 +30,24 @@ MainWindow::MainWindow(QWidget *parent)
         .mapRange(QStringLiteral("驾舱CAN"), 51, 100, StatusCard::Warning)
         .mapValue(QStringLiteral("网络传输"), QStringLiteral("OK"), StatusCard::Normal)
         .mapValue(QStringLiteral("网络传输"), QStringLiteral("ERR"), StatusCard::Error)
+        .mapValue(QStringLiteral("WiFi7"), QStringLiteral("断开"), StatusCard::Error)
     );
 
     // Card 2: 动力系统
     m_grid->addCard(0, 1, StatusCard::create()
         .title(QStringLiteral("动力系统"))
         .index(2)
-        .addField(QStringLiteral("电池电压"), QStringLiteral("0V"))
-        .addField(QStringLiteral("电机温度"), QStringLiteral("0°C"))
+        .addField(QStringLiteral("电池电压"), QStringLiteral("0"))
+        .setUnit(QStringLiteral("电池电压"), QStringLiteral("V"))
+        .addField(QStringLiteral("电机温度"), QStringLiteral("0"))
+        .setUnit(QStringLiteral("电机温度"), QStringLiteral("°C"))
         .mapRange(QStringLiteral("电池电压"), 48, 60, StatusCard::Normal)
         .mapRange(QStringLiteral("电池电压"), 40, 47, StatusCard::Warning)
         .mapRange(QStringLiteral("电池电压"), 0, 39, StatusCard::Error)
         .mapRange(QStringLiteral("电机温度"), 0, 80, StatusCard::Normal)
         .mapRange(QStringLiteral("电机温度"), 81, 100, StatusCard::Warning)
         .mapRange(QStringLiteral("电机温度"), 101, 150, StatusCard::Error)
+
     );
 
     // Card 3: 环境感知
@@ -64,7 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_grid->addCard(1, 0, StatusCard::create()
         .title(QStringLiteral("通信链路"))
         .index(4)
-        .addField(QStringLiteral("4G信号"), QStringLiteral("0%"))
+        .addField(QStringLiteral("4G信号"), QStringLiteral("0"))
+        .setUnit(QStringLiteral("4G信号"), QStringLiteral("%"))
         .addField(QStringLiteral("WiFi"), QStringLiteral("断开"))
         .mapRange(QStringLiteral("4G信号"), 80, 100, StatusCard::Normal)
         .mapRange(QStringLiteral("4G信号"), 50, 79, StatusCard::Warning)
@@ -77,8 +82,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_grid->addCard(1, 1, StatusCard::create()
         .title(QStringLiteral("底盘控制"))
         .index(5)
-        .addField(QStringLiteral("转向角"), QStringLiteral("0°"))
-        .addField(QStringLiteral("制动压力"), QStringLiteral("0 bar"))
+        .addField(QStringLiteral("转向角"), QStringLiteral("0"))
+        .setUnit(QStringLiteral("转向角"), QStringLiteral("°"))
+        .addField(QStringLiteral("制动压力"), QStringLiteral("0"))
+        .setUnit(QStringLiteral("制动压力"), QStringLiteral("bar"))
         .mapRange(QStringLiteral("转向角"), -30, 30, StatusCard::Normal)
         .mapRange(QStringLiteral("转向角"), -45, -31, StatusCard::Warning)
         .mapRange(QStringLiteral("转向角"), 31, 45, StatusCard::Warning)
@@ -111,6 +118,7 @@ MainWindow::MainWindow(QWidget *parent)
                               ? QStringLiteral("OK")
                               : QStringLiteral("ERR");
             card1->updateField(QStringLiteral("网络传输"), net);
+            card1->updateField(QStringLiteral("WiFi7"), QStringLiteral("断开"));
         }
 
         if (auto* card2 = m_grid->cardAt(0, 1)) {

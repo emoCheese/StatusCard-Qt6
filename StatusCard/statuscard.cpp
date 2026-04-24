@@ -87,7 +87,26 @@ void StatusCard::updateFieldInternal(const QString& fieldName, const QVariant& v
     FieldWidget& fw = it.value();
     fw.value->setText(value.toString());
 
-    StatusLevel level = m_mapper->evaluate(fieldName, value);
+    // 若字段标记有单位，从显示文本中提取纯数字用于映射判断
+    QVariant evalValue = value;
+    if (m_fieldUnits.contains(fieldName) && value.typeId() == QMetaType::QString) {
+        const QString str = value.toString();
+        QString numStr;
+        bool foundDigit = false;
+        for (const QChar& c : str) {
+            if (c.isDigit() || (c == QLatin1Char('-') && numStr.isEmpty())) {
+                numStr.append(c);
+                foundDigit = true;
+            } else if (foundDigit) {
+                break;
+            }
+        }
+        if (!numStr.isEmpty()) {
+            evalValue = numStr.toInt();
+        }
+    }
+
+    StatusLevel level = m_mapper->evaluate(fieldName, evalValue);
     fw.currentLevel = level;
 
     QPalette pal = fw.value->palette();
